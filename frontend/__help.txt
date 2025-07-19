@@ -1,0 +1,5 @@
+#Warning! {/frontend}
+be sure you are in a correct directory in your terminal
+
+npm install
+npm run dev

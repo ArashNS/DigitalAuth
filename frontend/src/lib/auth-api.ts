@@ -24,7 +24,7 @@ export interface AuthResponse {
 }
 
 export interface Document {
-  createElement(arg0: string): unknown;
+  body: any;
   id: number;
   title: string;
   owner: string;
@@ -216,7 +216,6 @@ export async function uploadDocument(
 export async function signDocument(data: SignDocumentData): Promise<Document> {
   const response = await apiRequest(`/documents/${data.document_id}/sign/`, {
     method: "POST",
-    body: JSON.stringify({ signer_name: data.signer_name }),
   });
 
   if (!response.ok) {

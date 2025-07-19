@@ -1,10 +1,16 @@
-source venv/scripts/activate
-python -m venv venv
-py -m pip install Django==5.2.4
+#Warning! {backend/}
+be sure you are in a correct directory in your terminal and venv is active.
 
---- whenever there's change inside {models.py} -> 
+--- whenever there's change inside {models.py} run this commands-> 
 python manage.py makemigrations
 python manage.py migrate
 
-
+--- for creating an admin user
 python manage.py createsuperuser
+
+--- additional for venv usages
+source venv/scripts/activate
+python -m venv venv
+pip install -r __requirements.txt
+
+

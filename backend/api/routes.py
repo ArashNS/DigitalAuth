@@ -1,5 +1,6 @@
 from django.urls import path
-from core.views import DocumentListCreateView, DocumentSignView, DocumentDetailView, RegisterView, CustomTokenObtainPairView, DocumentDownloadView, PasswordVerifyView
+from core.views import  RegisterView, CustomTokenObtainPairView,  PasswordVerifyView
+from service.views import DocumentListCreateView, DocumentDetailView, DocumentSignView, DocumentDownloadView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,

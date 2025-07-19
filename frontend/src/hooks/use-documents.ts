@@ -52,7 +52,7 @@ export function useDocuments() {
     [documents]
   );
 
-  const signDoc = useCallback(
+  const signAndRefresh = useCallback(
     async (data: SignDocumentData) => {
       setError(null);
 
@@ -68,21 +68,9 @@ export function useDocuments() {
     [fetchDocuments]
   );
 
-  const downloadDoc = useCallback(async (document: Document) => {
-    try {
-      const blob = await downloadDocument(document.id);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = document.file_name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      throw new Error("Failed to download document");
-    }
-  }, []);
+  const downloadDoc = async () => {
+    throw new Error("Deprecated: use local handleDownload()");
+  };
 
   const deleteDoc = useCallback(async (documentId: number) => {
     setError(null);
@@ -105,7 +93,7 @@ export function useDocuments() {
     error,
     fetchDocuments,
     uploadDoc,
-    signDoc,
+    signAndRefresh,
     downloadDoc,
     deleteDoc,
   };

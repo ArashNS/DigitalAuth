@@ -70,7 +70,7 @@ export default function Dashboard({
     isLoading: documentsLoading,
     error: documentsError,
     uploadDoc,
-    signDoc,
+    signAndRefresh,
     downloadDoc,
     deleteDoc,
   } = useDocuments();
@@ -185,7 +185,7 @@ export default function Dashboard({
         throw new Error("Password is incorrect");
       }
 
-      await signDoc({
+      await signAndRefresh({
         document_id: signDialog.document.id,
       });
 
@@ -209,10 +209,30 @@ export default function Dashboard({
   const handleDownload = async (document: Document) => {
     setDownloadLoading(document.id);
     try {
-      await downloadDoc(document);
+      const response = await fetch(
+        `http://localhost:8000/api/documents/${document.id}/download/`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to download");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = window.document.createElement("a");
+      link.href = url;
+      link.download = document.title + ".pdf";
+      window.document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed:", err);
-      // You could show a toast notification here
     } finally {
       setDownloadLoading(null);
     }
