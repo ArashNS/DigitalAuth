@@ -1,0 +1,10 @@
+source venv/scripts/activate
+python -m venv venv
+py -m pip install Django==5.2.4
+
+--- whenever there's change inside {models.py} -> 
+python manage.py makemigrations
+python manage.py migrate
+
+
+python manage.py createsuperuser
