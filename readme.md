@@ -13,7 +13,7 @@ Structure 🗃️ :
   
 Make sure you read txt files before anything else 👍
 * [Backend](./backend/__commands.txt)
-* [Frontend](./backend/__help.txt)
+* [Frontend](./frontend/__help.txt)
 ---
 Overview 📖 :
 ---
