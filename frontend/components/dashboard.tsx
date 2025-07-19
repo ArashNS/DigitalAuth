@@ -86,13 +86,13 @@ export default function Dashboard({
   const [signDialog, setSignDialog] = useState<{
     isOpen: boolean;
     document: Document | null;
-    signerName: string;
+    password: string;
     loading: boolean;
     error: string | null;
   }>({
     isOpen: false,
     document: null,
-    signerName: "",
+    password: "",
     loading: false,
     error: null,
   });
@@ -165,20 +165,34 @@ export default function Dashboard({
   };
 
   const handleSign = async () => {
-    if (!signDialog.document || !signDialog.signerName.trim()) return;
+    if (!signDialog.document || !signDialog.password.trim()) return;
 
     setSignDialog((prev) => ({ ...prev, loading: true, error: null }));
 
     try {
+      const res = await fetch("http://localhost:8000/api/verify-password/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({ password: signDialog.password }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.verified) {
+        throw new Error("Password is incorrect");
+      }
+
       await signDoc({
         document_id: signDialog.document.id,
-        signer_name: signDialog.signerName.trim(),
       });
 
       setSignDialog({
         isOpen: false,
         document: null,
-        signerName: "",
+        password: "",
         loading: false,
         error: null,
       });
@@ -186,7 +200,8 @@ export default function Dashboard({
       setSignDialog((prev) => ({
         ...prev,
         loading: false,
-        error: err instanceof Error ? err.message : "Permission Denied!",
+        error:
+          err instanceof Error ? err.message : "Password verification failed",
       }));
     }
   };
@@ -221,7 +236,7 @@ export default function Dashboard({
     setSignDialog({
       isOpen: true,
       document,
-      signerName: "",
+      password: "",
       loading: false,
       error: null,
     });
@@ -393,7 +408,9 @@ export default function Dashboard({
                     <TableHeader>
                       <TableRow>
                         <TableHead>Title</TableHead>
-                        <TableHead>Upload By</TableHead>
+                        <TableHead className="min-w-[100px]">
+                          Upload By
+                        </TableHead>
                         <TableHead>Upload Date</TableHead>
                         <TableHead>Size</TableHead>
                         <TableHead>Status</TableHead>
@@ -432,11 +449,13 @@ export default function Dashboard({
                           ))
                         : documents.map((document) => (
                             <TableRow key={document.id}>
-                              <TableCell className="font-medium">
+                              <TableCell className="font-medium text-center">
                                 {document.title}
                               </TableCell>
-                              <TableCell>{document.owner}</TableCell>
-                              <TableCell>
+                              <TableCell className="text-center  font-bold">
+                                {document.owner}
+                              </TableCell>
+                              <TableCell className="min-w-32 text-center">
                                 {formatDate(document.uploaded_at)}
                               </TableCell>
                               <TableCell>{document.file_size || "-"}</TableCell>
@@ -449,8 +468,10 @@ export default function Dashboard({
                                   {document.is_signed ? "Signed" : "Unsigned"}
                                 </Badge>
                               </TableCell>
-                              <TableCell>{document.signed_by || "-"}</TableCell>
-                              <TableCell>
+                              <TableCell className="min-w-24">
+                                {document.signed_by || "-"}
+                              </TableCell>
+                              <TableCell className="min-w-28">
                                 {document.signed_at
                                   ? formatDate(document.signed_at)
                                   : "-"}
@@ -528,16 +549,16 @@ export default function Dashboard({
               </Alert>
             )}
             <div className="space-y-2">
-              <Label htmlFor="signer-name">Signer Name</Label>
+              <Label htmlFor="sign-password">password</Label>
               <Input
-                id="signer-name"
+                id="sign-password"
+                placeholder="Enter your password"
                 type="text"
-                placeholder="Enter your full name"
-                value={signDialog.signerName}
+                value={signDialog.password}
                 onChange={(e) =>
                   setSignDialog((prev) => ({
                     ...prev,
-                    signerName: e.target.value,
+                    password: e.target.value,
                     error: null,
                   }))
                 }
@@ -552,7 +573,7 @@ export default function Dashboard({
                 setSignDialog({
                   isOpen: false,
                   document: null,
-                  signerName: "",
+                  password: "",
                   loading: false,
                   error: null,
                 })
@@ -563,7 +584,7 @@ export default function Dashboard({
             </Button>
             <Button
               onClick={handleSign}
-              disabled={!signDialog.signerName.trim() || signDialog.loading}
+              disabled={!signDialog.password.trim() || signDialog.loading}
             >
               {signDialog.loading ? (
                 <>

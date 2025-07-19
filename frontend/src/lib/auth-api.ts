@@ -43,7 +43,6 @@ export interface UploadDocumentData {
 
 export interface SignDocumentData {
   document_id: number;
-  signer_name: string;
 }
 
 export interface ErrorResponse {

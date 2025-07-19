@@ -6,6 +6,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import User
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.hashers import check_password
 
 from .models import Document, Signature
 from .serializers import DocumentSerializer
@@ -144,3 +145,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+    
+    
+class PasswordVerifyView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        password = request.data.get("password")
+        if not password:
+            return Response({"verified": False, "error": "No password provided"}, status=400)
+
+        is_correct = check_password(password, request.user.password)
+        if is_correct:
+            return Response({"verified": True})
+        return Response({"verified": False}, status=403)
