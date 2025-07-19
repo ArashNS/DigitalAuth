@@ -1,6 +1,18 @@
 #Warning! {backend/}
 be sure you are in a correct directory in your terminal and venv is active.
 
+--- additional for venv usages
+python -m venv {foldername}
+source venv/scripts/activate
+python -m venv venv
+pip install -r __requirements.txt
+
+--- running localhost
+python manage.py runserver
+
+--- building an app (just in case)
+django-admin startapp {appname}
+
 --- whenever there's change inside {models.py} run this commands-> 
 python manage.py makemigrations
 python manage.py migrate
@@ -8,9 +20,8 @@ python manage.py migrate
 --- for creating an admin user
 python manage.py createsuperuser
 
---- additional for venv usages
-source venv/scripts/activate
-python -m venv venv
-pip install -r __requirements.txt
+--- to access django database
+http://localhost:8000/admin
 
 
+backend localhost always needs to be running ! don't panic if there's 404 not found page 
