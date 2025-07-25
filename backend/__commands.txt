@@ -3,8 +3,7 @@ be sure you are in a correct directory in your terminal and venv is active.
 
 --- additional for venv usages
 python -m venv {foldername}
-source venv/scripts/activate
-python -m venv venv
+source venv/scripts/activate (bash)
 pip install -r __requirements.txt
 
 --- running localhost
