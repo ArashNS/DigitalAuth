@@ -1,5 +1,5 @@
 #Warning! {backend/}
-be sure you are in a correct directory in your terminal and venv is active.
+be sure you are in a correct directory inside your terminal and venv is active.
 
 --- additional for venv usages
 python -m venv {foldername}
