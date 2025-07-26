@@ -9,12 +9,10 @@ pip install -r __requirements.txt
 --- running localhost
 python manage.py runserver
 
---- building an app (just in case)
-django-admin startapp {appname}
-
---- whenever there's change inside {models.py} run this commands-> 
+--- Run it after cloning for the first Time!
 python manage.py makemigrations
 python manage.py migrate
+python manage.py collectstatic
 
 --- for creating an admin user
 python manage.py createsuperuser
