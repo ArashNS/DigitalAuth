@@ -1,7 +1,7 @@
 # Digital Document Management 
 
 
-Technologys 💻 : 
+Technologies 💻 : 
 - ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white)
 - ![NextJs](https://img.shields.io/badge/NextJS-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 - ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
