@@ -14,7 +14,7 @@ Structure 🗃️ :
 Make sure you read txt files before anything else 👍
 * [Backend](./backend/__commands.txt)
 * [Frontend](./frontend/__help.txt)
-* first run backend environment then front 
+* run backend environment first ... then front 
 ---
 Overview 📖 :
 ---
