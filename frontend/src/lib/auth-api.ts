@@ -27,6 +27,7 @@ export interface Document {
   body: any;
   id: number;
   title: string;
+  department: string;
   owner: string;
   uploaded_at: string;
   file_doc: string;
@@ -38,6 +39,7 @@ export interface Document {
 
 export interface UploadDocumentData {
   title: string;
+  department: string;
   file: File;
 }
 

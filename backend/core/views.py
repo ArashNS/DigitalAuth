@@ -6,7 +6,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
-
+#Authurozation related views
 
 class RegisterView(APIView):
     def post(self, request):
@@ -36,6 +36,18 @@ class RegisterView(APIView):
         user.save()
         return Response({'message': 'User created'}, status=201)
     
+class PasswordVerifyView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        password = request.data.get("password")
+        if not password:
+            return Response({"verified": False, "error": "No password provided"}, status=400)
+
+        is_correct = check_password(password, request.user.password)
+        if is_correct:
+            return Response({"verified": True})
+        return Response({"verified": False}, status=403)
     
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -54,17 +66,3 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-    
-    
-class PasswordVerifyView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        password = request.data.get("password")
-        if not password:
-            return Response({"verified": False, "error": "No password provided"}, status=400)
-
-        is_correct = check_password(password, request.user.password)
-        if is_correct:
-            return Response({"verified": True})
-        return Response({"verified": False}, status=403)

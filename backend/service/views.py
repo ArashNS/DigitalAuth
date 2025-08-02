@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from core.models import Document, Signature
 from core.serializers import DocumentSerializer
 
-
+#Document related views
 
 class DocumentDetailView(APIView):
     permission_classes = [IsAuthenticated]

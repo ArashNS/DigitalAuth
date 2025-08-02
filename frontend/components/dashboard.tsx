@@ -77,6 +77,7 @@ export default function Dashboard({
 
   const [uploadForm, setUploadForm] = useState({
     title: "",
+    department: "",
     file: null as File | null,
   });
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -138,10 +139,11 @@ export default function Dashboard({
     try {
       await uploadDoc({
         title: uploadForm.title.trim(),
+        department: uploadForm.department.trim(),
         file: uploadForm.file,
       });
 
-      setUploadForm({ title: "", file: null });
+      setUploadForm({ title: "", department: "", file: null });
       setUploadSuccess(true);
 
       // Reset file input
@@ -367,6 +369,25 @@ export default function Dashboard({
                     />
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="department">Department Case</Label>
+                    <Input
+                      id="department"
+                      type="text"
+                      placeholder="Select Department"
+                      value={uploadForm.department}
+                      onChange={(e) => {
+                        setUploadForm((prev) => ({
+                          ...prev,
+                          department: e.target.value,
+                        }));
+                        setUploadError(null);
+                        setUploadSuccess(false);
+                      }}
+                      required
+                      disabled={uploadLoading}
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="file-upload">PDF File</Label>
                     <Input
                       id="file-doc"
@@ -428,6 +449,7 @@ export default function Dashboard({
                     <TableHeader>
                       <TableRow>
                         <TableHead>Title</TableHead>
+                        <TableHead>Department</TableHead>
                         <TableHead className="min-w-[100px]">
                           Upload By
                         </TableHead>
@@ -471,6 +493,9 @@ export default function Dashboard({
                             <TableRow key={document.id}>
                               <TableCell className="font-medium text-center">
                                 {document.title}
+                              </TableCell>
+                              <TableCell className="font-medium text-center">
+                                {document.department}
                               </TableCell>
                               <TableCell className="text-center  font-bold">
                                 {document.owner}

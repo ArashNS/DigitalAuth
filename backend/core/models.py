@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class UserProfile(models.Model):
+    # https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.choices
     ROLE_CHOICES = (
         ('client', 'Client'),
         ('manager', 'Manager'),
@@ -14,8 +16,10 @@ class UserProfile(models.Model):
 
 
 class Document(models.Model):
+    # https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.ForeignKey
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="documents")
     title = models.CharField(max_length=50)
+    department = models.CharField(max_length=50, default="General")
     file_doc = models.FileField(upload_to='docs/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
