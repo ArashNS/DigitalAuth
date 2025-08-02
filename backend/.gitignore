@@ -8,3 +8,4 @@
 /core/migrations/__pycache__/
 /venv/
 *.sqlite3
+*.env

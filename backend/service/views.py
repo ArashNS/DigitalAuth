@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+# https://www.django-rest-framework.org/api-guide/permissions/
 from rest_framework.permissions import IsAuthenticated 
 
 from django.http import FileResponse
@@ -9,6 +10,27 @@ from core.models import Document, Signature
 from core.serializers import DocumentSerializer
 
 #Document related views
+class DocumentListCreateView(APIView):
+    permission_classes = [IsAuthenticated] 
+    
+    def get(self, request):
+      user_profile = getattr(request.user, "profile", None)
+      is_manager = user_profile and user_profile.role == "manager"
+ 
+      if is_manager:
+        docs = Document.objects.all()
+      else:
+        docs = Document.objects.filter(owner=request.user)
+
+      serializer = DocumentSerializer(docs, many=True)
+      return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = DocumentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(owner=request.user)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 class DocumentDetailView(APIView):
     permission_classes = [IsAuthenticated]
@@ -42,30 +64,6 @@ class DocumentDetailView(APIView):
 
         doc.delete()
         return Response({'message': 'Deleted'})
-    
-
-class DocumentListCreateView(APIView):
-    permission_classes = [IsAuthenticated] 
-    
-    def get(self, request):
-      user_profile = getattr(request.user, "profile", None)
-      is_manager = user_profile and user_profile.role == "manager"
- 
-      if is_manager:
-        docs = Document.objects.all()
-      else:
-        docs = Document.objects.filter(owner=request.user)
-
-      serializer = DocumentSerializer(docs, many=True)
-      return Response(serializer.data)
-    
-    def post(self, request):
-        serializer = DocumentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(owner=request.user)
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-
 
 class DocumentSignView(APIView):
     permission_classes = [IsAuthenticated]
@@ -86,13 +84,9 @@ class DocumentSignView(APIView):
         Signature.objects.create(document=doc, user=request.user)
         return Response({'message': 'Signed successfully!'})
 
-
-
-
 class DocumentDownloadView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
         document = get_object_or_404(Document, pk=pk)
         return FileResponse(document.file_doc.open(), as_attachment=True, filename=document.file_doc.name)
-

@@ -6,7 +6,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
-#Authurozation related views
+#Authorization related views
 
 class RegisterView(APIView):
     def post(self, request):
