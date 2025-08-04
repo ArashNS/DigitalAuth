@@ -6,9 +6,6 @@ python -m venv {foldername}
 source venv/scripts/activate (bash)
 pip install -r __requirements.txt
 
---- running localhost
-python manage.py runserver
-
 --- Run it after cloning for the first Time!
 python manage.py makemigrations
 python manage.py migrate
@@ -17,8 +14,12 @@ python manage.py collectstatic
 --- for creating an admin user
 python manage.py createsuperuser
 
+--- running localhost
+python manage.py runserver
+
 --- to access django database
 http://localhost:8000/admin
-
+http://127.0.0.1:8000/admin
+make sure it's on HTTP ! it won't access through HTTPS redirect...
 
 backend localhost always needs to be running ! don't panic if there's 404 not found page 
