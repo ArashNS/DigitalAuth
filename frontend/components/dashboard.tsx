@@ -14,6 +14,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -65,6 +72,14 @@ export default function Dashboard({
   username = "user",
   onLogout,
 }: DashboardProps) {
+  const departments = [
+    { id: "hr", name: "Human Resources" },
+    { id: "doj", name: "Department of Justice" },
+    { id: "edu", name: "Education " },
+    { id: "it", name: "Information Technology" },
+    { id: "research", name: "Research Geeks" },
+  ];
+
   const {
     documents,
     isLoading: documentsLoading,
@@ -119,7 +134,12 @@ export default function Dashboard({
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!uploadForm.title.trim() || !uploadForm.file) return;
+    if (
+      !uploadForm.title.trim() ||
+      !uploadForm.department.trim() ||
+      !uploadForm.file
+    )
+      return;
 
     // Validate file type
     if (uploadForm.file.type !== "application/pdf") {
@@ -370,22 +390,29 @@ export default function Dashboard({
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="department">Department Case</Label>
-                    <Input
-                      id="department"
-                      type="text"
-                      placeholder="Select Department"
+                    <Select
                       value={uploadForm.department}
-                      onChange={(e) => {
+                      onValueChange={(value) => {
                         setUploadForm((prev) => ({
                           ...prev,
-                          department: e.target.value,
+                          department: value,
                         }));
                         setUploadError(null);
                         setUploadSuccess(false);
                       }}
-                      required
                       disabled={uploadLoading}
-                    />
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {departments.map((dept) => (
+                          <SelectItem key={dept.id} value={dept.name}>
+                            {dept.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="file-upload">PDF File</Label>
@@ -406,6 +433,7 @@ export default function Dashboard({
                     className="w-full"
                     disabled={
                       !uploadForm.title.trim() ||
+                      !uploadForm.department.trim() ||
                       !uploadForm.file ||
                       uploadLoading
                     }

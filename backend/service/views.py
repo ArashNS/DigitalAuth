@@ -1,15 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-# https://www.django-rest-framework.org/api-guide/permissions/
 from rest_framework.permissions import IsAuthenticated 
+# https://www.django-rest-framework.org/api-guide/permissions/
 
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
-
-from core.models import Document, Signature
+from service.models import Document, Signature
 from core.serializers import DocumentSerializer
 
 #Document related views
+
 class DocumentListCreateView(APIView):
     permission_classes = [IsAuthenticated] 
     

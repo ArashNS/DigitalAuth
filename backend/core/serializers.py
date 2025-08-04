@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Document, Signature
+from service.models import Document, Signature
 
 class SignatureSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)

@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     # https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.choices
     ROLE_CHOICES = (
-        ('client', 'Client'),
-        ('manager', 'Manager'),
+        ('client'),
+        ('manager'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='client')
@@ -25,6 +25,7 @@ class Document(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.uploaded_at.date()})"
+
 
 class Signature(models.Model):
     document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name="signatures")

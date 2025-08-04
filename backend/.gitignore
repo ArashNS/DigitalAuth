@@ -4,8 +4,8 @@
 /api/__pycache__
 /main/__pycache__
 /core/__pycache__
-/core/migrations/*.py
-/core/migrations/__pycache__/
+/service/migrations/*.py
+/service/migrations/__pycache__/
 /venv/
 *.sqlite3
 *.env
