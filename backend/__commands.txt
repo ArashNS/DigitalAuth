@@ -1,6 +1,13 @@
 #Warning! {backend/}
 be sure you are in a correct directory inside your terminal and venv is active.
 
+--- .env guide
+create an .env file in backend root directory, ( variable name should be "KEY" )
+KEY=input_secret_key_here_on_.env_file
+run this command to generate a key and set that to KEY:
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+
+
 --- additional for venv usages
 python -m venv {foldername}
 source venv/scripts/activate (bash)

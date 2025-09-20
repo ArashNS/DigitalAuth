@@ -6,6 +6,5 @@
 /core/__pycache__
 /service/migrations/*.py
 /service/migrations/__pycache__/
-/venv/
 *.sqlite3
 *.env
